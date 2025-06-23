@@ -10,3 +10,26 @@ Future<bool> checkInternetConnection() async {
   bool connection = await InternetConnection().hasInternetAccess;
   return connection;
 }
+
+void SnackBarInternet(bool hasconnection, BuildContext context,
+    Text textinternet, Text textnointernet, Color coloryes, Color colorno) {
+  if (hasconnection) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: coloryes,
+        content: textinternet,
+        duration: const Duration(milliseconds: 4000),
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: textnointernet,
+        backgroundColor: colorno,
+        duration: const Duration(milliseconds: 4000),
+      ),
+    );
+  }
+}
