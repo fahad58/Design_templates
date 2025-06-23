@@ -8,3 +8,49 @@ http: ^1.2.2
 2. you need to update android/app/build.gradle 
 change minSdk = flutter.minSdkVersion to minSdk = 21
 
+3. you need to update android/settings.gradle
+we need version "1.8.22" apply false (or higher)
+
+4. we need to update android/app/scr/main/res/values/styles.xml
+<style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+
+this has to become <style name="NormalTheme" parent="Theme.MaterialComponents">
+
+and the same under android/app/scr/main/res/values-right. 
+<style name="NormalTheme" parent="Theme.MaterialComponents">
+
+5. make sure that Using an up-to-date Android gradle build tools version: example and an up-to-date gradle version accordingly: example
+android/build.gradle
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+
+and for the gradle version: 
+android/gradle/wrapper/gradle-wrapper.properties
+
+#Mon Nov 13 19:26:48 WET 2023
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-bin.zip
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+
+
+FOR MORE INFORMATION AND A VISUAL GUIDE WATCH THE FOLLOWING: https://www.youtube.com/watch?v=brFIYmoblJU&t=7s
