@@ -52,5 +52,38 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-bin.zip
 zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
 
+6. we have to update android/app/src/main/kotlin/com/example/application/MainActivity.kt
+
+package com.example.meineapp.meineapp
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
+
+
+we have to change FlutterActivity to 
+
+package com.example.meineapp.meineapp
+
+import io.flutter.embedding.android.FlutterFragmentActivity
+
+class MainActivity: FlutterFragmentActivity()
+
+7. create a file under android/app proguard-rules.pro
+and add the following content to the file:
+
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivity$g
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter$Args
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter$Error
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningEphemeralKeyProvider
+
+8. after that add the following to android/gradle.properties:
+
+android.enableR8.fullMode=false
+
+9. the following is for IOS !!!
+
+***Still to be updated....
 
 FOR MORE INFORMATION AND A VISUAL GUIDE WATCH THE FOLLOWING: https://www.youtube.com/watch?v=brFIYmoblJU&t=7s
