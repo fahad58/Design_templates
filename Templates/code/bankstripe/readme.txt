@@ -86,4 +86,21 @@ android.enableR8.fullMode=false
 
 ***Still to be updated....
 
+AFTER YOU ARE FINISHED WITH THE SET UP YOU NEED TO DO THE FOLLOWINg:
+
+11.  register your stripe dashboard account. 
+
+12. in lib we create a file constants.dart:
+
+we add the variables 
+
+const String stripePublishableKey = "INSERT PUBLISH KEY ";
+const String stripeSecretKey = "INSERT SECRET KEY";
+
+
+
+
+
+
+
 FOR MORE INFORMATION AND A VISUAL GUIDE WATCH THE FOLLOWING: https://www.youtube.com/watch?v=brFIYmoblJU&t=7s
