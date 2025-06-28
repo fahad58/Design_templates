@@ -1,9 +1,8 @@
-// ignore_for_file: camel_case_types
-
 import 'package:flutter/material.dart';
 
 enum IconPosition { top, left, right }
 
+// ignore: camel_case_types
 class icon_widget_box extends StatelessWidget {
   final Widget title;
   final Widget? description;
@@ -15,6 +14,12 @@ class icon_widget_box extends StatelessWidget {
   final EdgeInsetsGeometry? cardMargin;
   final AlignmentGeometry? cardAlignment;
 
+  // Card container customization
+  final double? cardElevation;
+  final Color? cardColor;
+  final BorderRadiusGeometry? cardBorderRadius;
+  final EdgeInsetsGeometry? cardPadding;
+
   const icon_widget_box({
     super.key,
     required this.title,
@@ -25,6 +30,10 @@ class icon_widget_box extends StatelessWidget {
     this.cardWidth,
     this.cardMargin,
     this.cardAlignment,
+    this.cardElevation = 4,
+    this.cardColor = Colors.white,
+    this.cardBorderRadius,
+    this.cardPadding,
   });
 
   @override
@@ -32,10 +41,16 @@ class icon_widget_box extends StatelessWidget {
     Widget content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title,
+        DefaultTextStyle.merge(
+          style: const TextStyle(fontFamily: 'Roboto'),
+          child: title,
+        ),
         if (description != null) ...[
           const SizedBox(height: 8),
-          description!,
+          DefaultTextStyle.merge(
+            style: const TextStyle(fontFamily: 'Roboto'),
+            child: description!,
+          ),
         ],
         if (button != null) ...[
           const SizedBox(height: 20),
@@ -66,6 +81,8 @@ class icon_widget_box extends StatelessWidget {
           );
           break;
         case IconPosition.top:
+        // ignore: unreachable_switch_default
+        default:
           cardChild = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,115 +98,62 @@ class icon_widget_box extends StatelessWidget {
 
     return Align(
       alignment: cardAlignment ?? Alignment.center,
-      child: Container(
-        margin: cardMargin ?? const EdgeInsets.all(16),
-        width: cardWidth ?? 400,
-        child: cardChild,
+      child: Card(
+        elevation: cardElevation,
+        color: cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: cardBorderRadius ?? BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: cardPadding ?? const EdgeInsets.all(16),
+          child: Container(
+            margin: cardMargin ?? EdgeInsets.zero,
+            width: cardWidth ?? 400,
+            child: cardChild,
+          ),
+        ),
       ),
     );
   }
 }
+
 .............................................................................
   $$$$$ DUMMY DATA MAIN.DART WHICH YOU CAN COUSTOMIZE ACCORDING TO YOU $$$$$
-//  import 'package:flutter/material.dart';
-// import 'icon_widget.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Wellness Card Demo',
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         backgroundColor: const Color(0xFFF8F9FA),
-//         body: Center(
-//           child: SingleChildScrollView(
-//             child: Column(
-//               children: [
-//                 Container(
-//                   width: 350,
-//                   margin: const EdgeInsets.all(20),
-//                   decoration: BoxDecoration(
-//                     color: Colors.white,
-//                     borderRadius: BorderRadius.circular(24),
-//                     boxShadow: [
-//                       BoxShadow(
-//                         color: Colors.black26,
-//                         blurRadius: 8,
-//                         spreadRadius: 2,
-//                       ),
-//                     ],
-//                   ),
-//                   padding: const EdgeInsets.all(30),
-//                   child: icon_widget_box(
-//                     title: const Text(
-//                       'Wellness Tool',
-//                       style: TextStyle(
-//                         fontFamily: "Italic",
-//                         fontSize: 24,
-//                         fontWeight: FontWeight.bold,
-//                         color: Colors.deepPurple,
-//                       ),
-//                     ),
-//                     description: const Text(
-//                       'Your personalized wellness companion',
-//                       style: TextStyle(
-//                         fontSize: 16,
-//                         color: Colors.black54,
-//                         fontStyle: FontStyle.italic,
-//                       ),
-//                     ),
-//                     icon: Container(
-//                       width: 70,
-//                       height: 70,
-//                       decoration: BoxDecoration(
-//                         shape: BoxShape.circle,
-//                         gradient: const LinearGradient(
-//                           colors: [Colors.pinkAccent, Colors.redAccent],
-//                           begin: Alignment.topLeft,
-//                           end: Alignment.bottomRight,
-//                         ),
-//                         boxShadow: const [
-//                           BoxShadow(
-//                             color: Colors.black26,
-//                             blurRadius: 12,
-//                             spreadRadius: 2,
-//                           ),
-//                         ],
-//                       ),
-//                       child: const Icon(
-//                         Icons.favorite,
-//                         color: Colors.white,
-//                         size: 32,
-//                       ),
-//                     ),
-//                     button: ElevatedButton(
-//                       onPressed: () {
-//                         print('Get Started pressed');
-//                       },
-//                       style: ElevatedButton.styleFrom(
-//                         backgroundColor: Colors.pink,
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(20),
-//                         ),
-//                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-//                       ),
-//                       child: const Text('Get Started'),
-//                     ),
-//                     cardAlignment: Alignment.center,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+// icon_widget_box card customization example:
+                icon_widget_box(
+                  title: const Text(
+                    'Winter Blazer',
+                    style: TextStyle(
+                      //  fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                      letterSpacing: 0.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  description: const Text(
+                    'Anything you want to write here',
+                    style: TextStyle(
+                      // fontFamily: 'Roboto',
+                      fontSize: 18,
+                      letterSpacing: 0.0,
+                      fontWeight: FontWeight.w500,
+                      height: 1.5,
+                    ),
+                  ),
+                  icon: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 243, 241, 241),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.shopping_cart,
+                      color: Color.fromARGB(255, 170, 41, 41),
+                      size: 20,
+                    ),
+                  ),
+                  cardWidth: 350,
+                  cardMargin: const EdgeInsets.all(20),
+                  cardAlignment: Alignment.center,
+                ),
