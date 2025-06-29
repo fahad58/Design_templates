@@ -1,119 +1,141 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 
-class SearchBarWidget extends StatefulWidget {
-  // New customizable parameters with defaults
-  final String hintText;
-  final TextStyle? hintStyle;
-  final Color fillColor;
-  final Widget? prefixIcon;
-  final TextStyle? textStyle;
-  final BorderRadius borderRadius;
+enum IconPosition { top, left, right }
 
-  // New callback for custom functionality
-  final ValueChanged<String>? onChanged;
+class IconWidgetBox extends StatelessWidget {
+  final Widget title;
+  final Widget? description;
+  final Widget? icon;
+  final IconPosition iconPosition;
+  final Widget? button;
 
-  // Optional validator, default provided internally
-  final String? Function(String?)? validator;
+  final double? cardWidth;
+  final EdgeInsetsGeometry? cardMargin;
+  final AlignmentGeometry? cardAlignment;
 
-  const SearchBarWidget({
+  // Card container customization
+  final double? cardElevation;
+  final Color? cardColor;
+  final BorderRadiusGeometry? cardBorderRadius;
+  final EdgeInsetsGeometry? cardPadding;
+
+  // New optional layout customizations
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
+
+  final double? iconSpacing;
+  final double? iconSize;
+
+  const IconWidgetBox({
     super.key,
-    this.validator,
-    this.hintText = 'Search',
-    this.hintStyle,
-    this.fillColor = const Color(0xFFE0E0E0), // Colors.grey.shade200
-    this.prefixIcon,
-    this.textStyle,
-    BorderRadius? borderRadius,
-    this.onChanged,
-  }) : borderRadius = borderRadius ?? const BorderRadius.all(Radius.circular(100));
-
-  @override
-  _SearchBarWidgetState createState() => _SearchBarWidgetState();
-}
-
-class _SearchBarWidgetState extends State<SearchBarWidget> {
-  late final TextEditingController _searchTextController;
-  late final FocusNode _searchFocusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchTextController = TextEditingController();
-    _searchFocusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _searchTextController.dispose();
-    _searchFocusNode.dispose();
-    super.dispose();
-  }
-
-  String? _defaultValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a search term';
-    }
-    return null;
-  }
+    required this.title,
+    this.description,
+    this.icon,
+    this.iconPosition = IconPosition.top,
+    this.button,
+    this.cardWidth,
+    this.cardMargin,
+    this.cardAlignment,
+    this.cardElevation = 4,
+    this.cardColor = Colors.white,
+    this.cardBorderRadius,
+    this.cardPadding,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.iconSpacing,
+    this.iconSize,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: TextFormField(
-        controller: _searchTextController,
-        focusNode: _searchFocusNode,
-        autofocus: false,
-        obscureText: false,
-        onChanged: widget.onChanged,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          hintStyle: widget.hintStyle ?? const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
+    final double effectiveIconSpacing = iconSpacing ?? 16.0;
+
+    Widget content = Column(
+      crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
+      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+      children: [
+        DefaultTextStyle.merge(
+          style: const TextStyle(fontFamily: 'Roboto'),
+          child: title,
+        ),
+        if (description != null) ...[
+          const SizedBox(height: 8),
+          DefaultTextStyle.merge(
+            style: const TextStyle(fontFamily: 'Roboto'),
+            child: description!,
           ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-              width: 1.0,
-            ),
-            borderRadius: widget.borderRadius,
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-              width: 1.0,
-            ),
-            borderRadius: widget.borderRadius,
-          ),
-          errorBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-              width: 1.0,
-            ),
-            borderRadius: widget.borderRadius,
-          ),
-          focusedErrorBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-              width: 1.0,
-            ),
-            borderRadius: widget.borderRadius,
-          ),
-          filled: true,
-          fillColor: widget.fillColor,
-          prefixIcon: widget.prefixIcon ?? const Icon(
-            Icons.search_sharp,
-            color: Colors.grey,
+        ],
+        if (button != null) ...[
+          const SizedBox(height: 20),
+          button!,
+        ],
+      ],
+    );
+
+    Widget? resizedIcon = icon != null && iconSize != null
+        ? SizedBox(
+            height: iconSize,
+            width: iconSize,
+            child: icon,
+          )
+        : icon;
+
+    Widget cardChild;
+    if (resizedIcon != null) {
+      switch (iconPosition) {
+        case IconPosition.left:
+          cardChild = Row(
+            crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+            children: [
+              resizedIcon,
+              SizedBox(width: effectiveIconSpacing),
+              Expanded(child: content),
+            ],
+          );
+          break;
+        case IconPosition.right:
+          cardChild = Row(
+            crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+            children: [
+              Expanded(child: content),
+              SizedBox(width: effectiveIconSpacing),
+              resizedIcon,
+            ],
+          );
+          break;
+        case IconPosition.top:
+          cardChild = Column(
+            crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+            children: [
+              resizedIcon,
+              SizedBox(height: effectiveIconSpacing),
+              content,
+            ],
+          );
+      }
+    } else {
+      cardChild = content;
+    }
+
+    return Align(
+      alignment: cardAlignment ?? Alignment.center,
+      child: Card(
+        elevation: cardElevation,
+        color: cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: cardBorderRadius ?? BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: cardPadding ?? const EdgeInsets.all(16),
+          child: Container(
+            margin: cardMargin ?? EdgeInsets.zero,
+            width: cardWidth ?? double.infinity,
+            child: cardChild,
           ),
         ),
-        style: widget.textStyle ?? const TextStyle(
-          fontSize: 16,
-          color: Colors.black87,
-          fontFamily: 'Roboto',
-        ),
-        validator: widget.validator ?? _defaultValidator,
       ),
     );
   }
