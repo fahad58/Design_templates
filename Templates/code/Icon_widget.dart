@@ -1,117 +1,119 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
-enum IconPosition { top, left, right }
+class SearchBarWidget extends StatefulWidget {
+  // New customizable parameters with defaults
+  final String hintText;
+  final TextStyle? hintStyle;
+  final Color fillColor;
+  final Widget? prefixIcon;
+  final TextStyle? textStyle;
+  final BorderRadius borderRadius;
 
-// ignore: camel_case_types
-class icon_widget_box extends StatelessWidget {
-  final Widget title;
-  final Widget? description;
-  final Widget? icon;
-  final IconPosition iconPosition;
-  final Widget? button;
+  // New callback for custom functionality
+  final ValueChanged<String>? onChanged;
 
-  final double? cardWidth;
-  final EdgeInsetsGeometry? cardMargin;
-  final AlignmentGeometry? cardAlignment;
+  // Optional validator, default provided internally
+  final String? Function(String?)? validator;
 
-  // Card container customization
-  final double? cardElevation;
-  final Color? cardColor;
-  final BorderRadiusGeometry? cardBorderRadius;
-  final EdgeInsetsGeometry? cardPadding;
-
-  const icon_widget_box({
+  const SearchBarWidget({
     super.key,
-    required this.title,
-    this.description,
-    this.icon,
-    this.iconPosition = IconPosition.top,
-    this.button,
-    this.cardWidth,
-    this.cardMargin,
-    this.cardAlignment,
-    this.cardElevation = 4,
-    this.cardColor = Colors.white,
-    this.cardBorderRadius,
-    this.cardPadding,
-  });
+    this.validator,
+    this.hintText = 'Search',
+    this.hintStyle,
+    this.fillColor = const Color(0xFFE0E0E0), // Colors.grey.shade200
+    this.prefixIcon,
+    this.textStyle,
+    BorderRadius? borderRadius,
+    this.onChanged,
+  }) : borderRadius = borderRadius ?? const BorderRadius.all(Radius.circular(100));
+
+  @override
+  _SearchBarWidgetState createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  late final TextEditingController _searchTextController;
+  late final FocusNode _searchFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchTextController = TextEditingController();
+    _searchFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  String? _defaultValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a search term';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DefaultTextStyle.merge(
-          style: const TextStyle(fontFamily: 'Roboto'),
-          child: title,
-        ),
-        if (description != null) ...[
-          const SizedBox(height: 8),
-          DefaultTextStyle.merge(
-            style: const TextStyle(fontFamily: 'Roboto'),
-            child: description!,
+    return Expanded(
+      child: TextFormField(
+        controller: _searchTextController,
+        focusNode: _searchFocusNode,
+        autofocus: false,
+        obscureText: false,
+        onChanged: widget.onChanged,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          hintStyle: widget.hintStyle ?? const TextStyle(
+            fontSize: 14,
+            color: Colors.grey,
           ),
-        ],
-        if (button != null) ...[
-          const SizedBox(height: 20),
-          button!,
-        ],
-      ],
-    );
-
-    Widget cardChild;
-    if (icon != null) {
-      switch (iconPosition) {
-        case IconPosition.left:
-          cardChild = Row(
-            children: [
-              icon!,
-              const SizedBox(width: 16),
-              Expanded(child: content),
-            ],
-          );
-          break;
-        case IconPosition.right:
-          cardChild = Row(
-            children: [
-              Expanded(child: content),
-              const SizedBox(width: 16),
-              icon!,
-            ],
-          );
-          break;
-        case IconPosition.top:
-        // ignore: unreachable_switch_default
-        default:
-          cardChild = Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              icon!,
-              const SizedBox(height: 16),
-              content,
-            ],
-          );
-      }
-    } else {
-      cardChild = content;
-    }
-
-    return Align(
-      alignment: cardAlignment ?? Alignment.center,
-      child: Card(
-        elevation: cardElevation,
-        color: cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: cardBorderRadius ?? BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: cardPadding ?? const EdgeInsets.all(16),
-          child: Container(
-            margin: cardMargin ?? EdgeInsets.zero,
-            width: cardWidth ?? 400,
-            child: cardChild,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+              width: 1.0,
+            ),
+            borderRadius: widget.borderRadius,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+              width: 1.0,
+            ),
+            borderRadius: widget.borderRadius,
+          ),
+          errorBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+              width: 1.0,
+            ),
+            borderRadius: widget.borderRadius,
+          ),
+          focusedErrorBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+              width: 1.0,
+            ),
+            borderRadius: widget.borderRadius,
+          ),
+          filled: true,
+          fillColor: widget.fillColor,
+          prefixIcon: widget.prefixIcon ?? const Icon(
+            Icons.search_sharp,
+            color: Colors.grey,
           ),
         ),
+        style: widget.textStyle ?? const TextStyle(
+          fontSize: 16,
+          color: Colors.black87,
+          fontFamily: 'Roboto',
+        ),
+        validator: widget.validator ?? _defaultValidator,
       ),
     );
   }
