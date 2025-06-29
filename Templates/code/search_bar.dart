@@ -15,7 +15,7 @@ class SearchBarWidget extends StatelessWidget {
 
   final BorderRadius? borderRadius;
 
-  // ✅ New icon support
+ 
   final IconData? icon;
   final bool isIconPrefix;
 
@@ -75,5 +75,5 @@ class SearchBarWidget extends StatelessWidget {
     color: Color.fromARGB(255, 2, 11, 19),
   ),
   borderRadius: BorderRadius.circular(12),
-  icon: Icons.home, // ✅ Just specify the icon
+  icon: Icons.home, 
 )
