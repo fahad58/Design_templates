@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ImageWidget extends StatelessWidget {
+class ImageCardWidget extends StatelessWidget {
   final Widget image;
   final Widget title;
   final Widget text;
-  final Widget icon;
+  final Widget? icon;
+
+  final double? imageHeight;
+  final double? imageWidth;
 
   final double? width;
   final EdgeInsetsGeometry? margin;
@@ -14,6 +17,11 @@ class ImageWidget extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final AlignmentGeometry? alignment;
 
+  final TextStyle? titleStyle;
+  final TextStyle? textStyle;
+  final double? titleSpacing;
+  final double? contentSpacing;
+
   // Card container customization
   final double? cardElevation;
   final Color? cardColor;
@@ -21,12 +29,14 @@ class ImageWidget extends StatelessWidget {
   final EdgeInsetsGeometry? cardMargin;
   final EdgeInsetsGeometry? cardPadding;
 
-  const ImageWidget({
+  const ImageCardWidget({
     super.key,
     required this.image,
     required this.title,
     required this.text,
-    required this.icon,
+    this.icon,
+    this.imageHeight,
+    this.imageWidth,
     this.width,
     this.margin,
     this.padding,
@@ -34,6 +44,10 @@ class ImageWidget extends StatelessWidget {
     this.backgroundColor,
     this.boxShadow,
     this.alignment,
+    this.titleStyle,
+    this.textStyle,
+    this.titleSpacing,
+    this.contentSpacing,
     this.cardElevation = 4,
     this.cardColor = Colors.white,
     this.cardBorderRadius,
@@ -43,10 +57,18 @@ class ImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double spacingAboveTitle = titleSpacing ?? 8.0;
+    final double spacingBelowTitle = contentSpacing ?? 8.0;
+
     return Container(
-      width: width,
+      width: width ?? double.infinity,
       margin: cardMargin ?? margin,
       alignment: alignment,
+      decoration: BoxDecoration(
+        borderRadius: borderRadius ?? BorderRadius.circular(16),
+        boxShadow: boxShadow,
+        color: backgroundColor,
+      ),
       child: Card(
         elevation: cardElevation,
         color: cardColor,
@@ -54,29 +76,34 @@ class ImageWidget extends StatelessWidget {
           borderRadius: cardBorderRadius ?? BorderRadius.circular(16),
         ),
         child: Padding(
-          padding: cardPadding ?? padding ?? const EdgeInsets.all(8),
+          padding: cardPadding ?? padding ?? const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: borderRadius ?? BorderRadius.circular(16),
-                child: image,
+                child: SizedBox(
+                  height: imageHeight,
+                  width: imageWidth ?? double.infinity,
+                  child: image,
+                ),
               ),
-              const SizedBox(height: 8),
-              // If 'title' is a Text widget, you can wrap it with DefaultTextStyle or ensure it has the desired style.
-              DefaultTextStyle(
-                style: const TextStyle(fontFamily: 'Roboto'),
+              SizedBox(height: spacingAboveTitle),
+              DefaultTextStyle.merge(
+                style: titleStyle ?? const TextStyle(fontFamily: 'Roboto', fontSize: 18, fontWeight: FontWeight.bold),
                 child: title,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: spacingBelowTitle),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DefaultTextStyle(
-                    style: const TextStyle(fontFamily: 'Roboto'),
-                    child: text,
+                  Expanded(
+                    child: DefaultTextStyle.merge(
+                      style: textStyle ?? const TextStyle(fontFamily: 'Roboto', fontSize: 14),
+                      child: text,
+                    ),
                   ),
-                  icon,
+                  if (icon != null) icon!,
                 ],
               ),
             ],
@@ -86,6 +113,7 @@ class ImageWidget extends StatelessWidget {
     );
   }
 }
+
 
 ..................................................................
 $$$$$ DUMMY DATA $$$$$
