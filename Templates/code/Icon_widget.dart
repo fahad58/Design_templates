@@ -144,20 +144,20 @@ class IconWidgetBox extends StatelessWidget {
 .............................................................................
   $$$$$ DUMMY DATA MAIN.DART WHICH YOU CAN COUSTOMIZE ACCORDING TO YOU $$$$$
 // icon_widget_box card customization example:
-                icon_widget_box(
+               icon_widget_box(
                   title: const Text(
-                    'Winter Blazer',
+                    'Meditation Reminder',
                     style: TextStyle(
-                      //  fontStyle: FontStyle.italic,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold,
                       fontSize: 18,
                       letterSpacing: 0.0,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   description: const Text(
-                    'Anything you want to write here',
+                    'Set a daily reminder to meditate and improve your mental well-being.',
                     style: TextStyle(
-                      // fontFamily: 'Roboto',
+                      fontStyle: FontStyle.italic,
                       fontSize: 18,
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.w500,
@@ -165,18 +165,22 @@ class IconWidgetBox extends StatelessWidget {
                     ),
                   ),
                   icon: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 243, 241, 241),
-                      shape: BoxShape.circle,
-                    ),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                          color:  const Color(0xFFD8F5E1), // soft green background
+                          borderRadius: BorderRadius.circular(8), // rounded square
+                          ),
+                    
                     child: const Icon(
-                      Icons.shopping_cart,
-                      color: Color.fromARGB(255, 170, 41, 41),
-                      size: 20,
+                        Icons.favorite_border,
+                        color: Color(0xFF2AA972), // green stroke color
+                        size: 20,
+                      ),
+                      
+                      
                     ),
-                  ),
+                  
                   cardWidth: 350,
                   cardMargin: const EdgeInsets.all(20),
                   cardAlignment: Alignment.center,
