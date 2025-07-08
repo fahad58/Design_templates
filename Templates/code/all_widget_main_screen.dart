@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_const
-
 import 'package:flutter/material.dart';
 import 'icon_widget.dart'; // Ensure this exports a class named IconWidgetBox
 import 'custom_text_widget.dart';
@@ -21,24 +19,13 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Two Cards Layout'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                                          Expanded(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
                   child: Card(
                     elevation: 2,
                     shape: RoundedRectangleBorder(
@@ -144,7 +131,6 @@ class MyApp extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             SizedBox(
-                              // height: 400, // removed to fix overflow
                               child: GridView.count(
                                 crossAxisCount: 2,
                                 childAspectRatio: 1.1,
@@ -171,7 +157,6 @@ class MyApp extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: const Icon(Icons.book, color: Colors.deepPurple, size: 20),
-                                      
                                     ),
                                     cardAlignment: Alignment.center,
                                   ),
@@ -228,28 +213,21 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                 ),
-                          
-                        ],
-                      ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                        CustomTextWidget(
+                            CustomTextWidget(
                               title: Text(
                                 'Your Progress',
                                 style: TextStyle(
@@ -264,7 +242,7 @@ class MyApp extends StatelessWidget {
                               ),
                               showCard: false,
                             ),
-                            const SizedBox(height: 28.0),
+                            SizedBox(height: 28.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -314,7 +292,7 @@ class MyApp extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
-                                        color: const Color.fromARGB(255, 18, 110, 26),
+                                        color: Color.fromARGB(255, 18, 110, 26),
                                       ),
                                     ),
                                     description: Text(
@@ -329,55 +307,53 @@ class MyApp extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 26.0),
+                            SizedBox(height: 26.0),
                             BlocksChartWidget(
-                            data: [10, 25, 35, 45, 55, 40, 30],
-                            labels: [
-                              'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
-                            ],
-                            backgroundColor: const Color.fromARGB(255, 12, 12, 12),
-                            cardColor: Colors.white,
-                            width: 400,
-                            height: 250,
-                            barColor: Colors.orange,
-                            barColors: [
-                              Colors.red,
-                              Colors.orange,
-                              Colors.yellow,
-                              Colors.green,
-                              Colors.blue,
-                              Colors.indigo,
-                              Colors.purple,
-                         
-                            ],
-                            labelColor: const Color.fromARGB(255, 10, 10, 10),
-                            labelFontSize: 14,
-                            maxBarHeight: 150,
-                            baseHeight: 50,
-                            labelHeight: 25,
-                            barWidth: 30,
-                            barSpacing: 20,
-                            yAxisWidth: 50,
-                            fontFamily: 'Arial',
-                            fontWeight: FontWeight.w600,
-                            titleWidget: Text(
-                              'Weekly Mood Chart',
-                              style: TextStyle(
-                                color: Colors.lightBlue,
-                                fontSize: 18,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w700,
+                              data: [10, 25, 35, 45, 55, 40, 30],
+                              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                              backgroundColor: Color.fromARGB(255, 12, 12, 12),
+                              cardColor: Colors.white,
+                              width: 400,
+                              height: 250,
+                              barColor: Colors.orange,
+                              barColors: [
+                                Colors.red,
+                                Colors.orange,
+                                Colors.yellow,
+                                Colors.green,
+                                Colors.blue,
+                                Colors.indigo,
+                                Colors.purple,
+                              ],
+                              labelColor: Color.fromARGB(255, 10, 10, 10),
+                              labelFontSize: 14,
+                              maxBarHeight: 150,
+                              baseHeight: 50,
+                              labelHeight: 25,
+                              barWidth: 30,
+                              barSpacing: 20,
+                              yAxisWidth: 50,
+                              fontFamily: 'Arial',
+                              fontWeight: FontWeight.w600,
+                              titleWidget: Text(
+                                'Weekly Mood Chart',
+                                style: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: 18,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
+                              indexValue: false,
                             ),
-                            indexValue: false,
-                              ),
-                          ]
-                      )
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
